@@ -1,0 +1,65 @@
+pacientes, formulas (formada por componentes)
+ingresar pacientes (nombre, apellido, particular y/o numero de linea)
+inyectable u oral
+lugar de atencion (nombres de clínicas o localidades con descripcion de dirección y horario en general)
+
+imprimir en etiquetas, nombre, formula y numero de frasco (aumenta en el pedido) y concentraciones (en otra tabla, separadas)
+
+pedido (nombre, numero de frasco (pueden ser varios) y/o concentracion, oral o inyectable, fecha para el pedido (para el jueves))
+
+
+novedades:
+
+ahora los frascos se piden por fórmula. cada formula tiene su selector de frasco, y a la vez, cada selector de frasco tiene asociado uno de precio.
+
+Máximo un pedido por paciente. Además, a la hora de editar o en el detalle, se muestran únicamente las fórmulas que habían cuando se hizo el pedido (las que se guardan en pedidos_formulas)
+
+En el pedido, se tiene que mostrar un aviso si se están pidiendo cantidades distintas de frasco (porque por defecto debería ser la misma, pero puede no serlo. Si no lo es, es porque algún frasco se le puede haber roto o vencido al paciente)
+
+que se venza el pedido (agregar campo "estado", para que sea "activo" o "vencido" (si ya pasó la fecha de impresión)). los vencidos no se pueden editar. Para hacer el tema del vencimiento de los pedidos:
+
+Sólo se pregunta en el listado y a la hora de imprimir pedidos (por si no se recargó la página).
+Con el setInterval se pueden mostrar los pedidos a imprimir con fecha de mañana (ésto por ahora no lo agregues, es un extra). 
+En caso de vencido. se pasa el pedido a "eliminado", y se actualiza la cantidad de frascos actuales.  Los pedidos vencidos no se pueden ni editar ni eliminar. Si se puede ver su detalle. 
+Para poder implementar esto, no hay que olvidarnos de cambiar para que ahora se listen todos los pedidos, pero que a los "eliminados" se les ponga en estado, "vencido" (vamos a usar el mismo campo de "eliminado" que veníamos usando hasta ahora)
+
+Para el tema de los frascos actuales, para poder editar el pedido, se tiene que guardar en otro campo el número de frascos elegidos de cada fórmula
+
+Agregar el detalle de pedido igual, para ver qué fórmulas se pidieron en el pedido (si no hay que ir mirando en el detalle del paciente y es incómodo)
+
+
+
+Agregar un campo de texto "médico" en el paciente (con el que se atiende)
+
+En crear_formula, agregar un campo de frasco_inicial (que modificará el frasco actual en la base) (esto es para la carga inicial de datos)
+
+Campo de "en uso" de fórmulas-> cuando se elimina, queda en desuso. Ahora se listan también las fórmulas eliminadas. Además, máximo dos frascos "en uso" por paciente. Se valida cuando se presiona en "crear_formula"
+en el caso de que ya tenga dos formulas, se le avisa que antes debe eliminar alguna de esas dos para poder agregar la otra.
+
+opcion de elegir si es en paralelo a la hora de crear y editar el paciente. si es asi, no se pisa, se agarega
+si no es en paralelo, se pisa.
+El tratamiento paralelo no te deja crear una fórmula si ya tiene dos. Si no es paralelo, no te deja crear más de una. No te deja desactivarlo si tenés dos fórmulas (primero se tiene que eliminar una o ambas)
+
+A la hora de imprimir los pedidos, usar el mismo sistema que al comienzo del archivo "abml_pedidos.php" para preguntar si los pedidos no vencidos, tiene efectivamente esa carcterística) (por si no se recargó la página)
+
+En el detalle paciente que también se muestre por qué fórmula va (después de que Joaco haya agregado éste adicional en el detalle_pedido)
+
+procedimientos Nato:
+
+A la hora de crear una nueva fórmula
+
+Si está en paralelo:
+
+se chequea que haya máximo una fórmula con eliminar = 0. Si la hay, se muestra el botón. Si no, se oculta.
+
+Si no está en paralelo:
+
+Si no tiene fórmulas (con eliminar = 0), se muestra el botón
+Si tiene fórmulas, no se muestra. (otra opción: se avisa que se eliminará. Se pregunta: ¿Está seguro de que desea eliminar la fórmula actual? (con opción de redirección a detalle_paciente.php como para que vea cuál se va a eliminar))
+
+
+En editar_paciente.php
+
+Al clickear el checkbox de "tratamiento paralelo", se procede así:
+
+Si tiene dos fórmulas con eliminar = 0, se desactiva el checkbox y se muestra (antes se debe eliminar alguna de las fórmulas). se muestra un cartel: "Éste paciente tiene más de una fórmula. Haga click aquí para eliminar alguna y así poder pasar a un tratamiento normal." (no se puede evitar el click en ese botón)
