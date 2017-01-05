@@ -1,0 +1,11 @@
+.tch-img
+{
+	position:relative;
+}
+
+.tch-img .label
+{
+	position: absolute;
+	left: -4px;
+    top: -3px;
+}
